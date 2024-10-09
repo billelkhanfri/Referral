@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import Logo from "../../assets/images/logo.svg";
+import Logo from "../assets/images/logo.svg";
 import { Button } from "@mui/material";
 import { MdMenuOpen } from "react-icons/md";
-import SearchBox from "../SearchBox";
+import SearchBox from "./SearchBox";
 function Header() {
   return (
     <header className="d-flex align-items-center">
@@ -17,12 +17,12 @@ function Header() {
             </Link>
           </div>
 
-          <div className="col-sm-3 d-flex align-items-center part2 pl-4">
+          {/* <div className="col-sm-3 d-flex align-items-center part2 pl-4">
             <Button className="rounded-circle mr-3">
               <MdMenuOpen />
             </Button>
             <SearchBox></SearchBox>
-          </div>
+          </div> */}
 
         </div>
 
