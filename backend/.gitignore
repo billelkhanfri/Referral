@@ -1,3 +1,3 @@
 node_modules
 .env
-config/connectToDb.js
+config/config.json
