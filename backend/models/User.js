@@ -68,6 +68,10 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    competence :{
+      type : String,
+      enum : ['competence1', 'competence2', 'competence3', 'competence4']
+    }
   },
 
   { timestamps: true }
@@ -93,6 +97,7 @@ function validateRegisterUser(obj) {
     secteurs: Joi.string().trim().min(2).required(),
     cpi: Joi.string().trim().min(5).required(),
     termsAccepted: Joi.boolean().required(),
+    competence: Joi.string().trim().min(2).max(100).required(),
   });
   return schema.validate(obj);
 }

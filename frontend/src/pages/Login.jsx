@@ -1,4 +1,4 @@
-import { Avatar, Grid2, Paper, TextField , Button , Typography} from "@mui/material";
+import { Avatar, Grid2, Paper, TextField , Button , Typography,Box, Stack} from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -13,8 +13,8 @@ function Login() {
       };
   const paperStyle = {
     padding: 20,
-    height: "450px",
-    width: "375px",
+    height: "430px",
+    width: "400px",
     margin: "20px auto",
     display:"flex",
     flexDirection:"column",
@@ -43,7 +43,7 @@ function Login() {
           <TextField
             label="email"
             variant="standard"
-            placeholder="tapez vote nom et votre prénom"
+            placeholder="tapez vote email"
             fullWidth
             required
             type="email"
@@ -68,19 +68,20 @@ function Login() {
           >
             Connexion
           </Button>
+          <Stack spacing={3}>
+            <Typography variant="caption" style={{ fontSize: "14px", marginTop:"10px" }}>
+              <Link to={"/"}>
+                <span>Mot de passe oubliée ?</span>
+              </Link>
+            </Typography>
 
-          <Typography variant="caption" style={{ fontSize: "14px" }}>
-            <Link to={"/"}>
-              <span>Mot de passe oubliée ?</span>
-            </Link>
-          </Typography>
-
-          <Typography variant="caption" style={{ fontSize: "16px" }}>
-            Vous n'avez pas de compte ?{" "}
-            <Link style={{ fontWeight: "bold" }} to={"/inscription"}>
-              S'inscrire
-            </Link>
-          </Typography>
+            <Typography variant="caption" style={{ fontSize: "16px" }}>
+              Vous n'avez pas de compte ?{" "}
+              <Link  style={{ fontWeight: "bold" }} to={"/register"}>
+                S'inscrire
+              </Link>
+            </Typography>
+          </Stack>
         </form>
       </Paper>
     </Grid2>

@@ -1,7 +1,10 @@
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
-const { User, validateRegisterUser, validateLoginUser } = require("../models/User");
-
+const {
+  User,
+  validateRegisterUser,
+  validateLoginUser,
+} = require("../models/User");
 
 /** --------------------------------------
  * @description Register New User
@@ -34,6 +37,7 @@ module.exports.registerUserCtrl = asyncHandler(async (req, res) => {
     secteurs: req.body.secteurs,
     cpi: req.body.cpi,
     termsAccepted: req.body.termsAccepted,
+    competence: req.body.competence,
   });
 
   //To sending email (verify account)
@@ -48,41 +52,40 @@ module.exports.registerUserCtrl = asyncHandler(async (req, res) => {
  * @access public
   -------------------------------------- */
 
+module.exports.loginUserCtrl = asyncHandler(async (req, res) => {
+  const { error } = validateLoginUser(req.body);
+  if (error) {
+    return res.status(400).json({ message: error.details[0].message });
+  }
 
-  module.exports.loginUserCtrl = asyncHandler(async(req,res)=> {
-    const { error } = validateLoginUser(req.body);
-    if (error) {
-      return res.status(400).json({ message: error.details[0].message });
-    }
-    const { email, password } = req.body;
+  // is user existing
+  const { email, password } = req.body;
 
-    // is user existing
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(404).json({ error: "Email ou mot de passe invalides." });
+  }
+  // compare password
 
-    const user = await User.findOne({ email : req.body.email });
-    if (!user) {
-      return res.json({ error: "Email ou mot de passe invalides." });
-    }
-    // compare password
+  const isPasswordMatch = await bcrypt.compare(
+    req.body.password,
+    user.password
+  );
+  if (!isPasswordMatch) {
+    return res.status(400).json({ error: "Email ou mot de passe invalides." });
+  }
 
-    const isPasswordMatch = await bcrypt.compare(req.body.password, user.password);
-    if (!isPasswordMatch) {
-      return res
-        .status(400)
-        .json({ error: "Email ou mot de passe invalides." });
-    }
+  //To sending email (verify account if not verified)
+  // generate token
+  const token = user.generateAuthToken();
 
+  res.status(200).json({
+    _id: user.id,
+    isAdmin: user.isAdmin,
+    profilePhoto: user.profilePhoto,
+    token,
+    message: "Connexion réussie.",
+  });
 
-    //To sending email (verify account if not verified)
-    // generate token
-    const token = user.generateAuthToken();
-
-    res.status(200).json({
-      _id: user.id,
-      isAdmin: user.isAdmin,
-      profilePhoto: user.profilePhoto,
-      token,
-      message: "Connexion réussie.",
-    });
-
-    // response to client
-  })
+  // response to client
+});

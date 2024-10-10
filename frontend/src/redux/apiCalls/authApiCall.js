@@ -20,3 +20,18 @@ export function loginUser(user) {
     }
   };
 }
+
+
+// Register User
+export function registerUser(user) {
+  return async (dispatch) => {
+    try {
+      const { data } = await request.post("/api/auth/register", user);
+      dispatch(authActions.register(data.message));
+      console.log(data.message);
+    } catch (error) {
+     
+      console.log(error.response.data.message);
+    }
+  };
+}

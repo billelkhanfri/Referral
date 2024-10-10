@@ -7,6 +7,7 @@ import Header from "./components/Header";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import Loader from "./components/Loader";
+import Register from "./pages/Register";
 
 function App() {
   const { user } = useSelector((state) => state.auth);
@@ -36,6 +37,10 @@ function App() {
         <Route
           path="/login"
           element={!user ? <Login /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/register"
+          element={!user ? <Register /> : <Navigate to="/" />}
         />
         <Route
           path="/dashboard"
